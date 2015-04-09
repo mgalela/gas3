@@ -13,8 +13,7 @@ angular
     'ngAnimate',
     'ngRoute'
   ])
-  .config(function ($routeProvider,$httpProvider) {
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -24,7 +23,24 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
+      .when('/device', {
+        templateUrl: 'views/device.html',
+        controller: 'DeviceCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .controller('AppCtrl', function ($scope,EXI) {
+
+    $scope.exi = {
+      devices: null,
+    };
+    
+    EXI.getDevices()
+    .then(function (data) {
+      $scope.exi.devices = data.data;
+      console.log('devices:', $scope.exi.devices);
+    });
+  })
+  ;

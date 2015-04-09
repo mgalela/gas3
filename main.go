@@ -4,6 +4,7 @@ import (
   "flag"
 
   "github.com/mgalela/gas3/db"
+  "github.com/mgalela/gas3/web"
 
   "github.com/gin-gonic/gin"
   "github.com/Sirupsen/logrus"
@@ -34,25 +35,16 @@ func main() {
 
   m := gin.Default()
 
-  slash := m.Group("/")
-  slash.Static("/static","static")
-  m.LoadHTMLFiles("templates/index.tmpl")
-
-  m.GET("/", Home)
-
   v1 := m.Group("/api/v1")
   {
-    v1.GET("/user", UserApi)
+    v1.GET("/device", web.Devices)
+    v1.GET("/device/:id", web.Device)
+    v1.POST("/device", web.DeviceNew)
+    v1.PUT("/device/:id", web.DeviceUpdate)
+    v1.DELETE("/device/:id", web.DeviceDel)
+    v1.POST("/devreg", web.DevReg)
   }
 
   Log.Info("starting server")
-  m.Run(":8001")
-}
-
-func Home(c *gin.Context) {
-  c.HTML(200, "index.tmpl", nil)
-}
-
-func UserApi(c *gin.Context){
-  c.String(200, "User page")
+  m.Run("0.0.0.0:8001")
 }

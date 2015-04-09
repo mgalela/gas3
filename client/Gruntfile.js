@@ -72,9 +72,9 @@ module.exports = function (grunt) {
         livereload: 35729
       },
       proxies: [{
-	connect: '/api',
+	context: '/api',
 	host: 'localhost',
-	port: '8080'
+	port: '8001'
       }],
       livereload: {
         options: {
@@ -374,6 +374,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      'configureProxies:server',
       'connect:livereload',
       'watch'
     ]);
